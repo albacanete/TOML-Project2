@@ -19,35 +19,35 @@ def Id(d):
         return (2 * d + 1) / (2 * d - 1)
 
 
-def Fout(d):
+def Fout(d, Fs):
     if d == header.D:
-        return header.Fs
+        return Fs
     else:
-        return header.Fs * (header.D ** 2 - d ** 2 + 2 * d - 1) / (2 * d - 1)
+        return Fs * (header.D ** 2 - d ** 2 + 2 * d - 1) / (2 * d - 1)
 
 
-def Fin(d):
+def Fin(d, Fs):
     if d == 0:
-        return header.Fs * header.D ** 2 * header.C
+        return Fs * header.D ** 2 * header.C
     else:
-        return header.Fs * (header.D ** 2 - d ** 2) / (2 * d - 1)
+        return Fs * (header.D ** 2 - d ** 2) / (2 * d - 1)
 
 
 def Fb(d):
-    return (header.C - abs(Id(d))) * Fout(d)
+    return (header.C - abs(Id(d))) * Fout(d, Fs)
 
 
 # E = alpha1/Tw + alpha2*Tw + alpha3
 # Fout = Fs*(D^2-d^2+2d-1)/(2d-1) when d = 1
 # Fin = Fs*(D^2-d^2)/(2d-1) when d = 1
 # Fb = (C-Id)*Fout = (C-(2d+1)/(2d-1))*Fout when d = 1
-def energy(Tw):
+def energy(Tw, Fs):
     d = 1
     alpha1 = header.Tcs + header.Tal + 3 / 2 * header.Tps * (
             (header.Tps + header.Tal) / 2 + header.Tack + header.Tdata) * Fb(d)
-    alpha2 = Fout(d) / 2
-    alpha3 = ((header.Tps + header.Tal) / 2 + header.Tcs + header.Tal + header.Tack + header.Tdata) * Fout(d) \
-             + (3 / 2 * header.Tps + header.Tack + header.Tdata) * Fin(d) \
+    alpha2 = Fout(d, Fs) / 2
+    alpha3 = ((header.Tps + header.Tal) / 2 + header.Tcs + header.Tal + header.Tack + header.Tdata) * Fout(d, Fs) \
+             + (3 / 2 * header.Tps + header.Tack + header.Tdata) * Fin(d, Fs) \
              + 3 / 4 * header.Tps * Fb(d)
     return alpha1 / Tw + alpha2 * Tw + alpha3
 
@@ -64,19 +64,33 @@ def delay(Tw):
 
 
 # Energy plot
-Tw = np.linspace(header.Tw_min, header.Tw_max)
-plt.plot(Tw, energy(Tw))
-plt.xlabel('Energy')
-plt.ylabel('Tw')
-plt.title('Energy function')
-plt.show()
+minutes = [1, 5, 10, 15, 20, 25, 30]
+for m in minutes:
+    Fs = 1.0 / (60 * m * 1000)
+    Tw = np.linspace(header.Tw_min, header.Tw_max)
+    plt.plot(Tw, energy(Tw, Fs))
+    plt.xlabel("Energy")
+    plt.ylabel("Tw")
+    plt.title("Energy function for Fs = " + str(m))
+    plt.show()
 
 
 # Delay plot
 Tw = np.linspace(header.Tw_min, header.Tw_max)
 plt.plot(Tw, delay(Tw))
-plt.xlabel('Delay')
-plt.ylabel('Tw')
-plt.title('Delay function')
+plt.xlabel("Delay")
+plt.ylabel("Tw")
+plt.title("Delay function")
 plt.show()
 
+
+# Energy-delay curve plot
+minutes = [1, 5, 10, 15, 20, 25, 30]
+for m in minutes:
+    Fs = 1.0 / (60 * m * 1000)
+    Tw = np.linspace(header.Tw_min, header.Tw_max)
+    plt.plot(energy(Tw, Fs), delay(Tw))
+    plt.xlabel("Energy")
+    plt.ylabel("Delay")
+    plt.title("Energy-delay curve for Fs = " + str(m))
+    plt.show()

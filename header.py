@@ -35,11 +35,7 @@ Tcs = 2.60  # Time [ms] to turn the radio into TX and probe the channel (carrier
 Tdata = Thdr + P / R + Tack  # data packet transmission duration [ms]
 
 # Sampling frequency
-Fs = 1.0 / (60 * 30 * 1000)  # e.g. Min traffic rate 1 pkt/half_hour = 1/(60*30*1000) pk/ms
-#minutes = [1, 5, 10, 15, 20, 25, 30]
-#Fs = []
-#for min in minutes:
-#    Fs.append(1.0 / (60 * min * 1000))
+Fs = 1.0 / (60 * 15 * 1000)  # e.g. Min traffic rate 1 pkt/half_hour = 1/(60*30*1000) pk/ms
 
 # Sleep period: Parameter Bounds
 Tw_max = 500.  # Maximum Duration of Tw in ms
