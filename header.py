@@ -5,8 +5,6 @@ Created on Wed Mar 28 16:49:07 2018
 @author: joseb
 """
 
-import numpy as np
-
 # %%
 ########################################################
 #    X-MAC: Trade_off Energy with Delay using GT
@@ -35,7 +33,7 @@ Tcs = 2.60  # Time [ms] to turn the radio into TX and probe the channel (carrier
 Tdata = Thdr + P / R + Tack  # data packet transmission duration [ms]
 
 # Sampling frequency
-Fs = 1.0 / (60 * 15 * 1000)  # e.g. Min traffic rate 1 pkt/half_hour = 1/(60*30*1000) pk/ms
+Fs = 1.0 / (60 * 30 * 1000)  # e.g. Min traffic rate 1 pkt/half_hour = 1/(60*30*1000) pk/ms
 
 # Sleep period: Parameter Bounds
 Tw_max = 500.  # Maximum Duration of Tw in ms
