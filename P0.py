@@ -64,14 +64,17 @@ def delay(Tw):
 
 # Energy plot
 minutes = [1, 5, 10, 15, 20, 25, 30]
+plt.figure()
 for m in minutes:
     Fs = 1.0 / (60 * m * 1000)
     Tw = np.linspace(header.Tw_min, header.Tw_max)
-    plt.plot(Tw, energy(Tw))
-    plt.xlabel("Tw")
-    plt.ylabel("Energy")
-    plt.title("Energy function for Fs = " + str(m))
-    plt.show()
+    lab = "Fs = " + str(m)
+    plt.plot(Tw, energy(Tw), label=lab)
+plt.xlabel("Tw")
+plt.ylabel("Energy")
+plt.title("Energy function for different Fs")
+plt.legend()
+plt.show()
 
 # Delay plot
 Tw = np.linspace(header.Tw_min, header.Tw_max)
