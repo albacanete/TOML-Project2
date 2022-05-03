@@ -1,7 +1,6 @@
-from cvxpy import Variable, Minimize, Problem, power
+from cvxpy import Variable, Minimize, Problem, ceil
 import numpy as np
 import header
-import math
 import matplotlib.pyplot as plt
 
 
@@ -54,14 +53,15 @@ beta2 = sum([header.Tcw / 2 + header.Tdata] * d)
 
 
 # P1
-Lmax = np.linspace(100, 5000, 491)
+# Lmax = np.linspace(100, 5000, 491)
+Lmax = np.arange(100, 5001, 100)
 energy_sols = []
 
 # Create optimization variable
 Tw = Variable(1, name='Tw', pos=True)
 
 # Calculate Etxn and Ttx
-Ttx = Tw / (header.Tps + header.Tal) * (header.Tps + header.Tal) / 2 + header.Tack + header.Tdata
+Ttx = (Tw / (header.Tps + header.Tal)) * (header.Tps + header.Tal) / 2 + header.Tack + header.Tdata
 Etxn = (header.Tcs + header.Tal + Ttx) * Fout(1)
 
 for l in Lmax:
@@ -79,8 +79,8 @@ for l in Lmax:
     problem = Problem(obj, constraints)
     solution = problem.solve(gp=True)  # Geometric Programming true
     energy_sols.append(solution)
-    # print("optimal value: ", solution)
 
+print(energy_sols)
 plt.plot(Lmax, energy_sols)
 plt.xlabel('Lmax')
 plt.ylabel('Minimization')
@@ -88,14 +88,14 @@ plt.title("Energy minimization")
 plt.show()
 
 # P2
-Ebudget = np.linspace(0.5, 5)
+Ebudget = np.arange(0.5, 5.1, 0.5)
 delay_sols = []
 
 # Create optimization variable
 Tw = Variable(1, name='Tw', pos=True)
 
 # Calculate Etxn and Ttx
-Ttx = Tw / (header.Tps + header.Tal) * (header.Tps + header.Tal) / 2 + header.Tack + header.Tdata
+Ttx = ceil(Tw / (header.Tps + header.Tal)) * (header.Tps + header.Tal) / 2 + header.Tack + header.Tdata
 Etxn = (header.Tcs + header.Tal + Ttx) * Fout(1)
 
 for e in Ebudget:
