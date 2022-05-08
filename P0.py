@@ -1,7 +1,8 @@
 import numpy as np
 import header
 import matplotlib.pyplot as plt
-
+import matplotlib as mpl
+mpl.rcParams['figure.figsize'] = (15, 10)
 
 def Nd(d):
     if d == 0:
@@ -74,18 +75,22 @@ plt.xlabel("Tw")
 plt.ylabel("Energy")
 plt.title("Energy function for different Fs")
 plt.legend()
-plt.show()
+# plt.show()
+plt.savefig("img/Energy_Fs")
 
 # Delay plot
+plt.figure()
 Tw = np.linspace(header.Tw_min, header.Tw_max)
 plt.plot(Tw, delay(Tw))
 plt.xlabel("Tw")
 plt.ylabel("Delay")
 plt.title("Delay function")
-plt.show()
+# plt.show()
+plt.savefig("img/Delay")
 
 # Energy-delay curve plot
 minutes = [1, 5, 10, 15, 20, 25, 30]
+plt.figure()
 for m in minutes:
     Fs = 1.0 / (60 * m * 1000)
     Tw = np.linspace(header.Tw_min, header.Tw_max)
@@ -93,4 +98,7 @@ for m in minutes:
     plt.xlabel("Energy")
     plt.ylabel("Delay")
     plt.title("Energy-delay curve for Fs = " + str(m))
-    plt.show()
+    #plt.show()
+    name = "Energy_Delay_Fs_" + str(m)
+    plt.savefig("img/" + name)
+    plt.clf()
