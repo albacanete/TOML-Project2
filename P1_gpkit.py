@@ -64,7 +64,7 @@ def betas(d):
 
 
 # P1: ENERGY MINIMIZATION
-Lmax = [500, 1200, 2000, 3500, 5000]   # No solution for Lmax < 500
+Lmax = [100, 500, 1200, 2000, 3500, 5000]   # No solution for Lmax < 500
 energy_sols = []
 minutes = [5, 10, 15, 20, 25, 30]      # No solution for 1 minute
 Tw_plt = np.linspace(header.Tw_min, header.Tw_max)
@@ -105,7 +105,7 @@ for l in Lmax:
         energy_sols.append(solution["cost"])
 
         # Plot
-        lab = "Fs = " + str(m)
+        lab = "" + str(round(1 / m, 3)) + " pkt/min"
         plt.plot(Tw_plt, energy(Tw_plt), label=lab)
         ax.scatter(solution['variables'][Tw], solution['cost'], color="red")
 
@@ -116,11 +116,12 @@ for l in Lmax:
     #plt.show()
     name = "Energy_Lmax_" + str(l)
     plt.savefig("img/"+name)
+print(energy_sols)
 print("minimimum energy: " + str(min(energy_sols)))
 print("maximum energy: " + str(max(energy_sols)))
 
 # P2: DELAY MINIMIZATION
-Ebudget = np.arange(1, 5.1, 0.5)
+Ebudget = np.arange(0.5, 5.1, 0.5)
 delay_sols = []
 
 fig = plt.figure()
@@ -162,6 +163,7 @@ for e in Ebudget:
     plt.plot(Tw_plt, delay(Tw_plt))
     ax.scatter(solution['variables'][Tw], solution['cost'], color="red")
 
+print(delay_sols)
 plt.xlabel('Tw')
 plt.ylabel('L(Tw)')
 plt.title("Delay minimization for Ebudget")

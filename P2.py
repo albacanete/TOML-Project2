@@ -60,13 +60,15 @@ Lmax = np.linspace(500, 5000, 7)   # No solution for Lmax < 500
 # Lmax = [750, 1500, 2000]
 nbs_sols = []
 
-# Plot
-#fig = plt.figure()
-#ax = fig.add_subplot(1, 1, 1)
-Tw_plt = np.linspace(header.Tw_min, header.Tw_max)
+# Tw_plt = np.linspace(header.Tw_min, header.Tw_max)
+Tw_plt = np.linspace(100, 1200)
+
+# To plot all Lmax in the same plot
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
 
 for l in Lmax:
-    E_worst = 0.04568404993547869
+    E_worst = 0.0457
     L_worst = l
 
     # Create optimization variable
@@ -113,13 +115,13 @@ for l in Lmax:
     problem = Problem(obj, constraints)
     solution = problem.solve()
 
+    print("Lmax = ", str(l))
     print("optimal value p* = ", problem.value)
     print("optimal var: Tw = ", Tw.value)
     print("optimal var: E1 = ", E1.value)
     print("optimal var: L1 = ", L1.value)
 
     # Add to plot
-    # ax.scatter(E1.value, L1.value, label='Lmax=' + str(l))
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
 
@@ -127,31 +129,36 @@ for l in Lmax:
     x_values = [E_worst, E1.value]
     y_values = [L_worst, L1.value]
     ax.scatter(E_worst, L_worst, color="green", label = "[Eworst, Lworst] = [" + str(E_worst) + ", " + str(L_worst) + "]")
+    plt.text(E_worst - 0.0025, L_worst + 50, "Eworst, Lworst", color="red", fontsize="medium")
     plt.plot(x_values, y_values, linestyle="--")
 
     # Best E and L points
-    E_best = 0.016227707747754578
-    L_best = 452.04768314235565
+    E_best = 0.0162
+    L_best = 452.0477
     x_values = [E_worst, E_best]
     y_values = [L_worst, L_best]
     ax.scatter(E_best, L_best, color="orange", label="[Ebest, Lbest] = [" + str(E_best) + ", " + str(L_best) + "]")
+    plt.text(E_best - 0.0015, L_best - 80, "Ebest, Lbest", fontsize="medium")
     plt.plot(x_values, y_values, linestyle="--")
 
     # NBS point
-    ax.scatter(E1.value, L1.value, label='Lmax=' + str(l))
+    # ax.scatter(E1.value, L1.value, label="Lmax = " + str(l)) # To plot all Lmax in the same plot
+    ax.scatter(E1.value, L1.value, label="[E1, L1] = [" + str(E1.value[0]) + ", " + str(L1.value[0]) + "]")
+    plt.text(E1.value - 0.001, L1.value + 100, "E1, L1", color="blue", fontsize="medium")
 
-    plt.plot(energy_plt(Tw_plt), delay_plt(Tw_plt), color="red")
+    plt.plot(energy_plt(Tw_plt), delay_plt(Tw_plt))
     plt.xlabel("E(Tw)")
     plt.ylabel("L(Tw)")
-    plt.legend(loc="upper center")
-    plt.show()
-
-    # label = "img/NBS_Lmax" + str(l) + ".png"
-    # plt.savefig(label)
+    plt.title("NBS for Lmax = " + str(l))
+    plt.legend(loc="upper center", fontsize="medium")
+    # plt.show()
+    label = "img/NBS_Lmax" + str(l) + ".png"
+    plt.savefig(label)
 
 # plt.plot(energy_plt(Tw_plt), delay_plt(Tw_plt), color='b')
 # plt.xlabel("E(Tw)")
 # plt.ylabel("L(Tw)")
 # plt.legend(loc="upper right")
+# plt.title("NBS for different Lmax")
 # plt.show()
 # plt.savefig("img/NBS")

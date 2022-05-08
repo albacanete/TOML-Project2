@@ -31,7 +31,6 @@ Tps = L_ps / R  # preamble strobe transmission duration [ms]
 Tcw = 15 * 0.62  # Contention window size [ms]
 Tcs = 2.60  # Time [ms] to turn the radio into TX and probe the channel (carrier sense)
 Tdata = Thdr + P / R + Tack  # data packet transmission duration [ms]
-
 # Sampling frequency
 Fs = 1.0 / (60 * 30 * 1000)  # e.g. Min traffic rate 1 pkt/half_hour = 1/(60*30*1000) pk/ms
 
