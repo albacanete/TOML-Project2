@@ -71,12 +71,13 @@ for m in minutes:
     Tw = np.linspace(header.Tw_min, header.Tw_max)
     lab = "Fs = " + str(m)
     plt.plot(Tw, energy(Tw), label=lab)
-plt.xlabel("Tw")
-plt.ylabel("Energy")
-plt.title("Energy function for different Fs")
-plt.legend()
-# plt.show()
-plt.savefig("img/Energy_Fs")
+    plt.xlabel("Tw")
+    plt.ylabel("Energy")
+    plt.title("Energy function for Fs = " + str(m))
+    #plt.legend()
+    # plt.show()
+    plt.savefig("img/Energy_Fs_" + str(m))
+    plt.clf()
 
 # Delay plot
 plt.figure()
@@ -90,15 +91,16 @@ plt.savefig("img/Delay")
 
 # Energy-delay curve plot
 minutes = [1, 5, 10, 15, 20, 25, 30]
+Tw = np.linspace(10, header.Tw_max)
 plt.figure()
 for m in minutes:
     Fs = 1.0 / (60 * m * 1000)
-    Tw = np.linspace(header.Tw_min, header.Tw_max)
-    plt.plot(energy(Tw), delay(Tw))
+    lab = "Fs = " + str(m)
+    plt.plot(energy(Tw), delay(Tw), label=lab)
     plt.xlabel("Energy")
     plt.ylabel("Delay")
-    plt.title("Energy-delay curve for Fs = " + str(m))
-    #plt.show()
-    name = "Energy_Delay_Fs_" + str(m)
-    plt.savefig("img/" + name)
-    plt.clf()
+    plt.title("Energy-delay curve for different Fs")
+plt.legend()
+# plt.show()
+name = "Energy_Delay_Fs"
+plt.savefig("img/" + name)

@@ -116,6 +116,8 @@ for l in Lmax:
     #plt.show()
     name = "Energy_Lmax_" + str(l)
     plt.savefig("img/"+name)
+print("minimimum energy: " + str(min(energy_sols)))
+print("maximum energy: " + str(max(energy_sols)))
 
 # P2: DELAY MINIMIZATION
 Ebudget = np.arange(1, 5.1, 0.5)
@@ -165,3 +167,5 @@ plt.ylabel('L(Tw)')
 plt.title("Delay minimization for Ebudget")
 # plt.show()
 plt.savefig("img/Delay_Ebudget")
+print("minimimum delay: " + str(min(delay_sols)))
+print("maximum delay: " + str(max(delay_sols)))
